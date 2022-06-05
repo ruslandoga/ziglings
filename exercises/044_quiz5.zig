@@ -19,15 +19,17 @@ const Elephant = struct {
 pub fn main() void {
     var elephantA = Elephant{ .letter = 'A' };
     // (Please add Elephant B here!)
+    var elephantB = Elephant{ .letter = 'B' };
     var elephantC = Elephant{ .letter = 'C' };
 
     // Link the elephants so that each tail "points" to the next elephant.
     // They make a circle: A->B->C->A...
     elephantA.tail = &elephantB;
     // (Please link Elephant B's tail to Elephant C here!)
+    elephantB.tail = &elephantC;
     elephantC.tail = &elephantA;
 
-    visitElephants(&elephantA);
+    callVisitElephants(&elephantA);
 
     std.debug.print("\n", .{});
 }
@@ -44,4 +46,20 @@ fn visitElephants(first_elephant: *Elephant) void {
         e.visited = true;
         e = e.tail;
     }
+}
+
+fn recursiveVisitElephants(e: *Elephant) void {
+    if (e.visited) return;
+    e.visited = true;
+
+    std.debug.print("Elephant {u}. ", .{e.letter});
+    recursiveVisitElephants(e.tail);
+}
+
+fn callVisitElephants(e: *Elephant) void {
+    if (e.visited) return;
+    e.visited = true;
+
+    std.debug.print("Elephant {u}. ", .{e.letter});
+    @call(.{}, callVisitElephants, .{e.tail});
 }
