@@ -28,7 +28,7 @@ fn suspendable() void {
     print("X", .{});
 
     suspend {
-        print("X", .{});
+        print("ABCDEF", .{});
     }
 
     print("X", .{});
